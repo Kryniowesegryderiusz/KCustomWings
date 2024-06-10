@@ -56,7 +56,7 @@ public class CustomWings extends JavaPlugin {
 	private static HashMap<UUID, CWPlayer> cwPlayerList;
 	private static HashMap<String, Wing> wings;
 
-	private final static String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace("org.bukkit.craftbukkit", "").replace(".", "");
+	private final static String VERSION = Bukkit.getServer().getBukkitVersion().split("-")[0];
 
 	private static Economy econ = null;
 	private static Permission perms = null;
@@ -337,20 +337,7 @@ public class CustomWings extends JavaPlugin {
 
 	private boolean isServerVersionSupported() {
 		List<String> supportedVersions = Arrays.asList(
-            "v1_13_R1",
-            "v1_13_R2",
-            "v1_14_R1",
-            "v1_15_R1",
-            "v1_16_R1",
-            "v1_16_R2",
-            "v1_16_R3",
-            "v1_17_R1",
-            "v1_18_R1",
-            "v1_18_R2",
-            "v1_19_R1",
-            "v1_19_R2",
-            "v1_19_R3",
-            "v1_20_R1"
+            "1.20.6"
         );
 		return supportedVersions.contains(VERSION);
 	}
