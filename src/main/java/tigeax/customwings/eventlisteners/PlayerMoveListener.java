@@ -23,19 +23,25 @@ public class PlayerMoveListener implements Listener {
 
         Bukkit.getScheduler().runTaskAsynchronously(CustomWings.getPlugin(CustomWings.class), () -> {
 
-            Player player = event.getPlayer();
-            CWPlayer cwPlayer = plugin.getCWPlayer(player);
+            try {
+				Player player = event.getPlayer();
+				CWPlayer cwPlayer = plugin.getCWPlayer(player);
 
-            if (cwPlayer.getEquippedWing() == null) {
-                return;
-            }
+				if (cwPlayer.getEquippedWing() == null) {
+				    return;
+				}
 
-            long now = Instant.now().getEpochSecond();
+				long now = Instant.now().getEpochSecond();
 
-            if (event.getFrom().distance(event.getTo()) > 0.2) {
-                NMSSupport.setBodyRotation(player, player.getLocation().getYaw());
-                plugin.getCWPlayer(player).setLastTimeMoving(now);
-            }
+				if (event.getFrom().distance(event.getTo()) > 0.2) {
+				    NMSSupport.setBodyRotation(player, player.getLocation().getYaw());
+				    plugin.getCWPlayer(player).setLastTimeMoving(now);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            
         });
 
 

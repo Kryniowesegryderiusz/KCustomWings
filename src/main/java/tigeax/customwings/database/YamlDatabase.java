@@ -15,10 +15,14 @@ public class YamlDatabase extends YamlFile implements Database {
     public YamlDatabase(JavaPlugin plugin) {
         super(plugin, "database.yml");
         Bukkit.getScheduler().runTaskTimerAsynchronously(CustomWings.getInstance(), () -> {
-            if (changes) {
-                save();
-                changes = false;
-            }
+            try {
+				if (changes) {
+				    save();
+				    changes = false;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }, 1200, 1200);
     }
 

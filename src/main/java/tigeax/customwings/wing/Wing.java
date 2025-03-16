@@ -102,29 +102,36 @@ public class Wing {
 			@Override
 			public void run() {
 
-				// If no players have this wing equipped stop the timer
-				if (getPlayersWithWingActive().isEmpty()) {
-					this.cancel();
+				try {
+					
+					// If no players have this wing equipped stop the timer
+					if (getPlayersWithWingActive().isEmpty()) {
+						this.cancel();
+					}
+
+					// If the wing should be animated change the offsetDegrees
+					// To go back and forth between the start and stop offset
+					if (wingConfig.getWingAnimation()) {
+
+						animationState = flapDirectionSwitch ? animationState - wingConfig.getWingFlapSpeed()
+								: animationState + wingConfig.getWingFlapSpeed();
+
+						if (animationState >= wingConfig.getStopOffset())
+							flapDirectionSwitch = true;
+
+						if (animationState <= wingConfig.getStartOffset())
+							flapDirectionSwitch = false;
+					}
+
+					// Loop through all the players that have the wing active, and spawn their wing
+					getPlayersWithWingActive().forEach((wingOwner) -> showWing(wingOwner, animationState));
+					
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-
-				// If the wing should be animated change the offsetDegrees
-				// To go back and forth between the start and stop offset
-				if (wingConfig.getWingAnimation()) {
-
-					animationState = flapDirectionSwitch ? animationState - wingConfig.getWingFlapSpeed()
-							: animationState + wingConfig.getWingFlapSpeed();
-
-					if (animationState >= wingConfig.getStopOffset())
-						flapDirectionSwitch = true;
-
-					if (animationState <= wingConfig.getStartOffset())
-						flapDirectionSwitch = false;
-				}
-
-				// Loop through all the players that have the wing active, and spawn their wing
-				getPlayersWithWingActive().forEach((wingOwner) -> showWing(wingOwner, animationState));
 
 			}
+			
 		}.runTaskTimerAsynchronously(plugin, 0, wingConfig.getWingTimer());
 	}
 
@@ -332,6 +339,8 @@ public class Wing {
 		for (double[] coordinate : wingConfig.getParticleCoordinates().keySet()) {
 
 			WingParticle wingParticle = wingConfig.getParticleCoordinates().get(coordinate);
+			if (wingParticle == null)
+				continue;
 			double x = coordinate[0];
 			double y = coordinate[1];
 
